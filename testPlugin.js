@@ -1,6 +1,10 @@
 export default {
     install(app) {
         app.config.globalProperties.$multiply = (a, b) => a * b;
-        console.log("External Multiply plugin loaded");
+        app.config.globalProperties.$test = "Test String";
+
+        app.config.globalProperties.$getArray = () => {
+            return ["Günili", "GoldenMES"];
+        };
     }
 };

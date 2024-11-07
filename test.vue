@@ -1,3 +1,7 @@
+<script setup lang="ts">
+console.log("Loaded test component.");
+</script>
+
 <template>
-    TEST PAGE LOADED.
+    Loaded test component.
 </template>

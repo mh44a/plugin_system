@@ -1,20 +1,28 @@
 const fs = require('fs');
-const crypto = require('crypto');
+const CryptoJS = require('crypto-js');
 
-const filePath = 'testPlugin.js';
-const fileContent = fs.readFileSync(filePath, 'utf8');
+function encryptFile(filePath, password, outputFilePath) {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.error("Dosya okunamadı:", err);
+      return;
+    }
 
-const algorithm = 'aes-256-cbc';
-const key = crypto.randomBytes(32);
-const iv = crypto.randomBytes(16); 
+    const b64_file_content = data.toString('base64');
+    const encrypted = CryptoJS.AES.encrypt(b64_file_content, password).toString();
 
-const cipher = crypto.createCipheriv(algorithm, key, iv);
-let encrypted = cipher.update(fileContent, 'utf8', 'hex');
-encrypted += cipher.final('hex');
+    fs.writeFile(outputFilePath, encrypted, (err) => {
+      if (err) {
+        console.error("Şifrelenmiş dosya yazılamadı:", err);
+      } else {
+        console.log(`Şifrelenmiş dosya başarıyla yazıldı: ${outputFilePath}`);
+      }
+    });
+  });
+}
 
-const encryptedData = iv.toString('hex') + ':' + encrypted;
-const encodedData = Buffer.from(encryptedData, 'hex').toString('utf8');
+const inputFilePath = 'testPlugin.js';
+const password = 'your_password';
+const outputFilePath = 'plugin.gjs';
 
-fs.writeFileSync('testPlugin_crypted.js', encodedData, 'utf8');
-
-console.log('Dosya başarıyla şifrelendi! Anahtar: ' + key.toString('hex') + ' IV: ' + iv.toString('hex'));
+encryptFile(inputFilePath, password, outputFilePath);

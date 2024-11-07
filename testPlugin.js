@@ -4,6 +4,6 @@ function addData(array, data) {
 
 export default {
     install(app) {
-        app.config.globalProperties.$addSidebarItem = (siderBarArray, route, name, icon) => addData(array, { route, name, icon });
+        app.config.globalProperties.$addSidebarItem = (siderBarArray, route, name, icon) => addData(siderBarArray, { route, name, icon });
     },
 };

@@ -1,4 +1,4 @@
-import { defineAsyncComponent } from 'vue';
+/*import { defineAsyncComponent } from 'vue';
 
 async function loadExternalComponent(url) {
     try {
@@ -10,7 +10,7 @@ async function loadExternalComponent(url) {
         console.error('Error loading component:', error);
         return null;
     }
-}
+}*/
 
 
 function addData(array, data) {
@@ -25,15 +25,17 @@ export default {
 
         componentUrls.forEach(async (url, index) => {
             const componentName = `DynamicComponent${index + 1}`;
-            const DynamicComponent = defineAsyncComponent(async () => {
+            console.log(componentName);
+            
+            /*const DynamicComponent = defineAsyncComponent(async () => {
                 const component = await loadExternalComponent(url);
                 if (!component) throw new Error('Component could not be loaded.');
                 return component;
             });
 
-            app.component(componentName, DynamicComponent);
+            app.component(componentName, DynamicComponent);*/
         });
 
-        app.config.globalProperties.$addSidebarItem = (siderBarArray, route, name, icon) => addData(siderBarArray, { route, name, icon });
+        app.config.globalProperties.$addSidebarItem = (siderBarArray, route, name, icon) => siderBarArray.push({ route, name, icon });
     }
 };

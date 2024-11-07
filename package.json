@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "cryptify": "^4.1.2"
+    "cryptify": "^4.1.2",
+    "crypto-js": "^4.2.0"
   }
 }

@@ -1,17 +1,20 @@
 const fs = require('fs');
-const Cryptify = require('cryptify');
+const crypto = require('crypto');
 
-const password = 'e7G8NcL7-b9a1-4J9S-8C5C-fP29L10GbbN3';
+const filePath = 'testPlugin.js';
+const fileContent = fs.readFileSync(filePath, 'utf8');
 
-const instance = new Cryptify('testPlugin.js', password);
-instance
-  .encrypt()
-  .then((files) => {
-    fs.writeFileSync('testPlugin_encoded.js', JSON.stringify(files[0]));
-    console.log('Encryption successful');
-  })
-  .then(() => instance.decrypt())
-  .then((files) => {
-    console.log(files[0])
-  })
-  .catch((e) => console.error(e));
+const algorithm = 'aes-256-cbc';
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16); 
+
+const cipher = crypto.createCipheriv(algorithm, key, iv);
+let encrypted = cipher.update(fileContent, 'utf8', 'hex');
+encrypted += cipher.final('hex');
+
+const encryptedData = iv.toString('hex') + ':' + encrypted;
+const encodedData = Buffer.from(encryptedData, 'hex').toString('utf8');
+
+fs.writeFileSync('testPlugin_crypted.js', encodedData, 'utf8');
+
+console.log('Dosya başarıyla şifrelendi! Anahtar: ' + key.toString('hex') + ' IV: ' + iv.toString('hex'));

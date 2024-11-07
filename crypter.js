@@ -1,19 +1,18 @@
-// Node.js ile örnek AES-256 şifreleme
 const crypto = require('crypto');
 const fs = require('fs');
 
-const algorithm = 'aes-256-cbc';
-const key = crypto.randomBytes(32); // 256 bit anahtar
-const iv = crypto.randomBytes(16); // 128 bit iv
+const algorithm = 'aes-256-ctr';
+const password = 'e7G8NcL7-b9a1-4J9S-8C5C-fP29L10GbbN3';
 
-// Plugin dosyasını okuyun
-const pluginCode = fs.readFileSync('testPlugin.js', 'utf8');
+const encrypt = (data) => {
+  const cipher = crypto.createCipher(algorithm, password);
+  let encrypted = cipher.update(data, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+};
 
-// Şifreleme işlemi
-const cipher = crypto.createCipheriv(algorithm, key, iv);
-let encrypted = cipher.update(pluginCode, 'utf8', 'base64');
-encrypted += cipher.final('base64');
+const pluginData = fs.readFileSync('testPlugin.js', 'utf8');
+const encryptedData = encrypt(pluginData);
 
-// Şifreli veriyi ve anahtarı kaydedin
-fs.writeFileSync('encryptedPlugin.js.enc', encrypted);
-fs.writeFileSync('pluginKey.json', JSON.stringify({ key: key.toString('base64'), iv: iv.toString('base64') }));
+fs.writeFileSync('encryptedPlugin.js', encryptedData);
+console.log("Plugin şifrelendi.");

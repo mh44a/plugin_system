@@ -20,7 +20,7 @@ function addData(array, data) {
 export default {
     install(app) {
         const componentUrls = [
-            'https://raw.githubusercontent.com/{username}/{repository}/{branch}/{path_to_file1}.vue',
+            'https://raw.githubusercontent.com/mh44a/plugin_system/refs/heads/main/test.vue',
         ];
 
         componentUrls.forEach(async (url, index) => {
